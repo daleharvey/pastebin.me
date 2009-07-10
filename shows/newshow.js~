@@ -1,0 +1,13 @@
+function(doc, req) {
+
+  respondWith(req, {
+    html : function() {
+      return {body:"<h1>helloworld</h1>"};
+    },
+    xml : function() {
+      return {
+        body : "<xml><node value=\"hello world\"/></xml>"
+      };
+    }
+  });
+};

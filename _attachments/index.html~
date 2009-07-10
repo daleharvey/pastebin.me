@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+    <title>Pastebin.me - Share Code</title>
+    
+    <link rel="stylesheet" href="./paste.css" type="text/css">
+    
+  </head>
+  
+  <body>
+
+    <div id="pastewrapper"><div id="pastearea">
+
+        <input type="button" value="Edit Code" id="viewcode" />
+
+        <form action="" id="form">
+          <input type="text" id="title" tabindex="1" value="" />
+          <iframe id="paste"></iframe>
+          <textarea id="code" tabindex="2"></textarea>
+
+          <div id="templates">
+            <strong>templates: </strong>
+            <ul>
+              <li><a name="xhtml">XHTML</a></li>
+              <li><a name="jquery">JQUERY</a></li>
+              <li><a name="jqueryui">JQUERY UI</a></li>
+              <li><a name="dojo">DOJO</a></li>
+            </ul>
+          </div>
+          
+          <input type="submit" tabindex="3" id="save" 
+                 value="Save Your Paste" />
+        </form>
+
+    </div></div>
+
+    <div id="toolbar">
+      <div id="new">
+        <a href="/pastebin/_design/pastebin.me/index.html" class="btn"><span><span>New Paste</span></span></a>
+      </div>
+      <div id="recent">
+        <h3>Recent Posts</h3>
+        <ul id="postlist"></ul>
+      </div>
+
+    </div>
+    
+    <div id="footer">
+      <table cellspacing="3">
+        <tr>
+          <td><em>who </em></td><td width="170px">
+            <a href="mailto:dale@arandomurl.com">dale@arandomurl.com</a></td>
+          <td><em>where </em></td><td><a target="_blank" href="http://www.linode.com/?r=bde45b7ba8346eec9a56d7276f536caea70c6004">linode</a></td>
+        </tr>
+        <tr>
+          <td><em>what </em></td><td><a target="_blank" href="http://github.com/daleharvey/pastebin.me/tree/master">Source(github)</a></td>
+          <td><em>how </em></td><td><a target="_blank" href="http://couchdb.apache.org/">CouchDB</a></td>
+        </tr>
+      </table>
+
+    <script src="/_utils/script/json2.js"></script>
+    <script src="/_utils/script/jquery.js?1.2.6"></script>
+    <script src="/_utils/script/jquery.couch.js?0.8.0"></script>
+    <script src="./pretty.js"></script>
+    <script src="./paste.js"></script>
+    
+  </body>
+</html>

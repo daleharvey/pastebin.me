@@ -33,10 +33,10 @@ Paste = function() {
 
 Paste.prototype.save_paste = function()
 {
-  var that = this;
+  var that = this, d = new Date();
 
   var paste = {
-    date:  (new Date()).getTime(),
+    date:  d.getTime()  + (d.getTimezoneOffset() * 60000),
     paste: this.dom.textarea.val(),
     title: this.dom.title.val()
   };
@@ -145,7 +145,8 @@ Paste.prototype.load_recent_posts = function()
 
   $.get(url, opts, function(data) {
     $.each(data.rows, function() {
-      var date = ' <span class="subtle">('+ prettyDate(this.key) +')</span>';
+      var ndate = prettyDate(this.key - ((new Date()).getTimezoneOffset() * 60000)) || "the future!";
+      var date = ' <span class="subtle">('+ ndate +')</span>';
       var link = '<li><a href="/' + this.value.id+'">'
         +this.value.title+'</a>'+date+'</li>';
       $("#postlist").append(link);

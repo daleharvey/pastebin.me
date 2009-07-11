@@ -1,6 +1,5 @@
 // an example map function, emits the doc id test
 // and the list of keys it contains
-// !code lib/helpers/math.js
 
 function(doc) {
   if( doc.paste ) {

@@ -4,7 +4,7 @@
 
 <head>
     <title>Conforming XHTML 1.0 Strict Template</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
     <script type="text/javascript">
         $(function()
         {

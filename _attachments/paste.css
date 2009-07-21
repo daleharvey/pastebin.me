@@ -44,6 +44,7 @@ ul {
 
 #paste { 
  width:      100%;
+ padding-left:3px;
  border:     1px solid #CCC;
  background: white;
 }
@@ -58,16 +59,10 @@ ul {
 
 #viewcode { 
  position: absolute;
- top:      7px;
- right:    10px;
+ top:      6px;
+ padding:  3px;
+ right:    6px;
  z-index:  9999999;
-}
-
-#save { 
- padding:  2px; 
- position: absolute;
- bottom:   10px;
- right:    10px;
 }
 
 #recent a {  
@@ -122,7 +117,7 @@ ul {
 #templates strong {  
  font:         bold 11px arial, sans-serif;                
  margin-right: 10px;
- margin-top:   0px;
+ margin-top:   1px;
  float:        left;
 }
 
@@ -146,8 +141,8 @@ ul {
  position:   fixed;
  bottom:     0px;
  width:      100%;
- height:     40px;
- padding:    2px;
+ height:     36px;
+ padding:    4px;
  color:      #BBB;
  background: #111;
  font:       11px normal arial, Sans-Serif;
@@ -181,22 +176,8 @@ ul {
 #new a { 
  display:         block;
  margin:          10px 0px;
- text-align:      center; 
- background:      #F9F9F9;
- text-decoration: none;
  padding:         10px;
- color:           #666;
  font:            16px arial, sans-serif;
- border-color:    #CCC #999 #999 #CCC;
- border-width:    1px;
- border-style:    solid;
- -moz-border-radius:    3px;
- -webkit-border-radius: 3px;
-}
-
-#new a:hover { 
- color:        #333;
- border-color: #9CFF00 #669900 #669900 #9CFF00;
 }
 
 #lines {   
@@ -233,4 +214,29 @@ ul {
  padding:     20px; 
  -moz-border-radius:    5px;
  -webkit-border-radius: 5px;
+}
+
+#save { 
+ position: absolute;
+ bottom:   10px;
+ right:    5px;
+ padding:         4px;
+ font:            bold 12px arial, sans-serif;
+}
+
+.btn {  
+ text-align:      center; 
+ background:      #F9F9F9;
+ text-decoration: none;
+ color:           #666;
+ border-color:    #CCC #999 #999 #CCC;
+ border-width:    1px;
+ border-style:    solid;
+ -moz-border-radius:    3px;
+ -webkit-border-radius: 3px;
+}
+
+.btn:hover {  
+ color:        #333;
+ border-color: #9CFF00 #669900 #669900 #9CFF00;
 }

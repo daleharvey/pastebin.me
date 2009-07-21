@@ -1,6 +1,12 @@
 Paste = function() {
 
-  var id = document.location.pathname.split("/")[1];
+  this.live = document.location.hostname == "pastebin.me";
+
+  // Get the id of the post, through url or query string
+  var query = Paste.parse_query(document.location.href);
+  var id = (!this.live)
+    ? (query ? query.paste : "")
+    : document.location.pathname.split("/")[1];
 
   this.state = ( id !== "" )
     ? {NEW_POST:false, VIEW:"HTML", _id:id}
@@ -15,12 +21,17 @@ Paste = function() {
     lines:    $("#lines")
   };
 
+  var home = this.live ? "/"
+    : "/pastebin/_design/pastebin.me/index.html";
+  $("#new a").attr("href", home);
+
   this.load_recent_posts();
   this.add_events();
 
   if( !this.state.NEW_POST ) {
     this.retrieve_post(this.state_id);
   } else {
+    document.title = "Pastebin.me - New Post";
     this.dom.title.val("[Enter Title Here]");
     this.dom.textarea.show();
     this.dom.lines.show();
@@ -36,7 +47,7 @@ Paste.prototype.save_paste = function()
   var that = this, d = new Date();
 
   var paste = {
-    date:  d.getTime()  + (d.getTimezoneOffset() * 60000),
+    date:  d.getTime(),
     paste: this.dom.textarea.val(),
     title: this.dom.title.val()
   };
@@ -142,11 +153,15 @@ Paste.prototype.load_recent_posts = function()
   var opts = { reduce: false, descending: true, limit:13 };
   var url  = "/pastebin/_design/pastebin.me/_view/recent";
 
+  var root = this.live
+    ? "/"
+    : "/pastebin/_design/pastebin.me/index.html?paste=";
+
   $.get(url, opts, function(data) {
     $.each(data.rows, function() {
-      var ndate = prettyDate(this.key - ((new Date()).getTimezoneOffset() * 60000)) || "the future!";
+      var ndate = prettyDate(this.key) || "the future!";
       var date = ' <span class="subtle">('+ ndate +')</span>';
-      var link = '<li><a href="/' + this.value.id+'">'
+      var link = '<li><a href="'+root + this.value.id+'">'
         +this.value.title+'</a>'+date+'</li>';
       $("#postlist").append(link);
     });
@@ -172,6 +187,7 @@ Paste.prototype.retrieve_post = function( id )
     "url":"/pastebin/"+this.state._id,
     "dataType": "json",
     "success": function(data) {
+      document.title = "Pastebin.me - "+data.title;
       that.dom.title.val( data.title );
       that.dom.textarea.text( data.paste );
 

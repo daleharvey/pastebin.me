@@ -19,15 +19,12 @@
 
     <div id="pastewrapper"><div id="pastearea">
 
-        <input type="button" value="Edit Code" id="viewcode" class="btn" />
-
         <form action="" id="form">
-          <input type="text" id="title" tabindex="1" value="" />
+
           <iframe id="paste"></iframe>
-          <div id="wrapper">
-            <div id="lines"></div>
-            <textarea id="code" tabindex="2"></textarea>
-          </div>
+          <div id="lines"></div>
+          <textarea id="code" tabindex="2"></textarea>
+
           <div id="templates">
             <strong>templates: </strong>
             <ul>
@@ -46,6 +43,7 @@
     </div></div>
 
     <div id="toolbar">
+      <input class="btn disabled" id="viewcode" value="Edit This Paste"  />
       <div id="new">
         <a class="btn">New Paste</a>
       </div>

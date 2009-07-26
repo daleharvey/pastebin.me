@@ -3,6 +3,6 @@
 
 function(doc) {
   if( doc.paste ) {
-    emit(doc.date, {id:doc._id, title:doc.title});
+    emit(doc.date, {id:doc._id});
   }
 };

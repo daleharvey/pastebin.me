@@ -15,7 +15,6 @@ Paste = function() {
   this.dom = {
     textarea: $("#code"),
     iframe:   $("#paste"),
-    title:    $("#title"),
     viewcode: $("#viewcode"),
     form:     $("#form"),
     lines:    $("#lines")
@@ -27,18 +26,17 @@ Paste = function() {
 
   this.load_recent_posts();
   this.add_events();
+  this.window_resize();
 
   if( !this.state.NEW_POST ) {
     this.retrieve_post(this.state_id);
   } else {
     document.title = "Pastebin.me - New Post";
-    this.dom.title.val("[Enter Title Here]");
     this.dom.textarea.show();
     this.dom.lines.show();
-    $("#title, #templates, #save").show();
+    $("#templates, #save").show();
   }
 
-  this.window_resize();
   this.fill_lines();
 };
 
@@ -48,8 +46,7 @@ Paste.prototype.save_paste = function()
 
   var paste = {
     date:  d.getTime(),
-    paste: this.dom.textarea.val(),
-    title: this.dom.title.val()
+    paste: this.dom.textarea.val()
   };
 
   $("#save").attr("disabled", "disabled").val("Saving...");
@@ -77,17 +74,12 @@ Paste.prototype.show_error = function(reason)
   }, 2000);
 };
 
-Paste.prototype.view_code = function()
+Paste.prototype.toggle = function()
 {
   this.dom.textarea.show();
   this.dom.lines.show();
   this.dom.iframe.hide();
-  this.dom.viewcode.hide();
-
-  var that = this;
-  setTimeout( function() {
-    that.dom.textarea[0].focus();
-  });
+  this.dom.viewcode.addClass("disabled");
 };
 
 Paste.prototype.add_events = function()
@@ -116,20 +108,24 @@ Paste.prototype.add_events = function()
     checkTab(e);
   });
 
-  this.dom.viewcode.bind('mousedown', function() {
-    that.view_code();
-  });
-
-  this.dom.title.bind('focus', function() {
-    if( $(this).val() == "[Enter Title Here]" ) {
-      $(this).val("");
-    }
+  this.dom.viewcode.bind('mousedown', function(e) {
+    that.toggle();
+    e.preventDefault();
+    e.stopPropagation();
   });
 };
 
 Paste.prototype.window_resize = function()
 {
-  $("#code, #paste, #lines").height($(window).height() - 116);
+  var winheight = $(window).height(),
+       winwidth = $(window).width();
+
+  $("#code, #paste, #lines").height(winheight - 93);
+  $("#pastearea").height(winheight - 60);
+  $("#lines").height(winheight - 95);
+
+  $("#code").width(winwidth-222);
+  $("#paste").width(winwidth-195);
 };
 
 Paste.prototype.load_template = function(tpl)
@@ -141,7 +137,7 @@ Paste.prototype.load_template = function(tpl)
 
     that.dom.textarea.val(data);
     if( that.state !== "CODE" ) {
-      that.view_code();
+      that.toggle();
     }
 
   }, "text");
@@ -162,7 +158,7 @@ Paste.prototype.load_recent_posts = function()
       var ndate = prettyDate(this.key) || "the future!";
       var date = ' <span class="subtle">('+ ndate +')</span>';
       var link = '<li><a href="'+root + this.value.id+'">'
-        +this.value.title+'</a>'+date+'</li>';
+        +ndate+'</a></li>';
       $("#postlist").append(link);
     });
   }, "json");
@@ -187,24 +183,22 @@ Paste.prototype.retrieve_post = function( id )
     "url":"/pastebin/"+this.state._id,
     "dataType": "json",
     "success": function(data) {
-      document.title = "Pastebin.me - "+data.title;
-      that.dom.title.val( data.title );
+
       that.dom.textarea.text( data.paste );
 
       if(data.paste.match(/<html/)) {
         that.dom.iframe.attr("src", show+that.state._id);
         that.dom.iframe.show();
-        that.dom.viewcode.show();
+        that.dom.viewcode.removeClass("disabled");
       } else {
         that.dom.textarea.show();
         that.dom.lines.show();
       }
-      $("#title, #templates, #save").show();
+      $("#templates, #save").show();
     },
     "error" : function(data) {
-      that.view_code();
-      that.dom.title.val("[Enter Title Here]");
-      $("#title, #templates, #save").show();
+      that.toggle();
+      $("#templates, #save").show();
     }
   });
 };

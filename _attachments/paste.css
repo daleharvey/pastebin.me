@@ -8,6 +8,10 @@ textarea {
  font: 12px normal courier, monospace;
 }
 
+input, textarea {  
+ outline:none;
+}
+
 p {  
  font: 10px normal arial, Sans-Serif;
 }
@@ -18,6 +22,7 @@ em {
 
 body {  
  background: #EEE;
+ overflow:hidden;
 }
 
 ul {  
@@ -28,41 +33,42 @@ ul {
  color: #666;
 }
 
-#templates, #title, #save, #lines, #code, #paste, #error, #viewcode {  
+#viewcode.disabled {  
+  opacity:0.5;
+}
+#viewcode.disabled:hover {  
+ color:           #666;
+ border-color:    #CCC #999 #999 #CCC;
+}
+
+#templates, #save, #lines, #code, #paste, #error {  
  display:none;
 }
 
 #pastewrapper {  
- padding: 0px 270px 0px 0px;
+ padding: 0px 195px 0px 0px;
 }
 
 #pastearea {  
  position: relative;
- padding:  5px 10px 25px 10px;
+ padding:  10px 10px 0px 10px;
  width:    100%;
 }
 
 #paste { 
- width:      100%;
+ position:absolute;
  padding-left:3px;
  border:     1px solid #CCC;
  background: white;
 }
 
 #code {  
- width:         100%;
+ position:absolute;
  margin-bottom: 4px;
- padding-left:  3px;
- border:        1px solid #9CFF00;
- z-index:       9999;
-}
-
-#viewcode { 
- position: absolute;
- top:      6px;
- padding:  3px;
- right:    6px;
- z-index:  9999999;
+ padding-left:  29px;
+ border:        1px solid;
+ border-color: #9CFF00 #99BB33 #99BB33 #9CFF00;
+ z-index:       99;
 }
 
 #recent a {  
@@ -78,20 +84,9 @@ ul {
  color: #B6C0D2;
 }
 
-#title {  
- font:          italic 18px arial, sans-serif;
- border:        0px solid #CCC;
- padding:       2px;
- background:    transparent;
- margin-bottom: 2px;
- margin-right:  200px;
- width:         100%;
- z-index:       99999;
-}
-
 #recent {
  padding: 5px; 
- width:   210px;
+ width:   150px;
 }
 
 #recent h3 {  
@@ -101,8 +96,8 @@ ul {
 
 #toolbar {  
  position: absolute;
- top:      23px;
- right:    20px;
+ top:      10px;
+ right:    10px;
 }
 
 #postlist a, #postlist span {  
@@ -110,6 +105,10 @@ ul {
 }
 
 #templates {  
+  position:absolute;
+  bottom:9px;
+  margin-left:2px;
+  width:400px;
   height:      12px;
   line-height: 12px;
 }
@@ -174,30 +173,29 @@ ul {
 }
 
 #new a { 
- display:         block;
+ display:block;
  margin:          10px 0px;
  padding:         10px;
- font:            16px arial, sans-serif;
+ font:            bold 12px arial, sans-serif;
 }
+
+#viewcode { padding:10px 0px; width:100%; font: 12px arial, sans-serif; 
+ cursor:default; }
 
 #lines {   
   position:      absolute;
   font:          12px normal courier, monospace;
   text-align:    right;
-  left:          0px;
+  margin:   1px 0px 1px 1px;
   width:         22px;
   color:         #666;
   padding-right: 3px;
   overflow:      hidden;
   background:    #E6E6E6;
-  border-color:  #9CFF00 #CCC #9CFF00 #9CFF00;
-  border-width:  1px;
-  border-style:  solid;
-}
-
-#wrapper { 
- position:     relative; 
- padding-left: 25px; 
+  border-color: transparent #CCC transparent transparent;
+  border-width: 1px;
+  border-style: solid;
+  z-index:99999;
 }
 
 #error {  
@@ -218,7 +216,7 @@ ul {
 
 #save { 
  position: absolute;
- bottom:   10px;
+ bottom:   0px;
  right:    5px;
  padding:         4px;
  font:            bold 12px arial, sans-serif;

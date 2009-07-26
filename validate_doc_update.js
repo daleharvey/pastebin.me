@@ -10,7 +10,7 @@ function (newDoc, oldDoc, userCtx) {
     };
   }
 
-  if( !(newDoc.date && newDoc.paste && newDoc.title) ) {
+  if( !(newDoc.date && newDoc.paste ) ) {
     throw {
       forbidden: "Cannot post empty paste"
     };

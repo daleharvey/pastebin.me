@@ -1,15 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<!DOCTYPE html>
+<html>
   <head>
-    
-    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-    <link rel="shortcut icon" href="/pastebin/_design/pastebin.me/favicon.ico" type="image/x-icon"/>
+
+    <meta charset="utf-8" />
+
+    <link rel="stylesheet" 
+          href="/pastebin/_design/pastebin.me/paste.css" 
+          type="text/css">    
+    <link rel="shortcut icon" 
+          href="/pastebin/_design/pastebin.me/favicon.ico" 
+          type="image/x-icon"/>
 
     <title>Pastebin.me - Share Code</title>
-    
-    <link rel="stylesheet" href="/pastebin/_design/pastebin.me/paste.css" type="text/css">
     
   </head>
   
@@ -21,7 +23,7 @@
 
         <form action="" id="form">
 
-          <iframe id="paste"></iframe>
+          <div id="framewrap"><iframe id="paste"></iframe></div>
           <div id="lines"></div>
           <textarea id="code" tabindex="2"></textarea>
 
@@ -37,16 +39,15 @@
           </div>
           
           <input type="submit" tabindex="3" id="save" class="btn"
-                 value="Save Your Paste &raquo;" />
+                 value="Save &raquo;" />
+          <div id="new"><a>(Blank Paste)</a></div>
         </form>
 
     </div></div>
 
     <div id="toolbar">
-      <input class="btn disabled" id="viewcode" value="Edit This Paste"  />
-      <div id="new">
-        <a class="btn">New Paste</a>
-      </div>
+      <input id="viewcode" type="checkbox" />
+      <!--<input class="btn" id="viewcode" value="Edit This Paste"  />-->
       <div id="recent">
         <h3>Recent Posts</h3>
         <ul id="postlist"></ul>
@@ -57,7 +58,7 @@
       <table cellspacing="3">
         <tr>
           <td><em>who </em></td><td width="170px">
-            <a href="mailto:dale@arandomurl.com">dale@arandomurl.com</a></td>
+            <a href="http://arandomurl.com" target="_blank">dale@arandomurl.com</a></td>
           <td><em>where </em></td><td><a target="_blank" href="http://www.linode.com/?r=bde45b7ba8346eec9a56d7276f536caea70c6004">linode</a></td>
         </tr>
         <tr>
@@ -71,6 +72,7 @@
     </div>
 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.js"></script>
+    <script src="/pastebin/_design/pastebin.me/iphone-style-checkboxes.js"></script>
     <script src="/pastebin/_design/pastebin.me/paste.js"></script>
 
   </body>

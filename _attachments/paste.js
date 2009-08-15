@@ -1,5 +1,8 @@
 Paste = function() {
 
+  // just so I can fix the urls when deving locally
+  // (cant be bothered installing nginx)
+  //this.live = "";
   this.live = document.location.hostname == "pastebin.me";
 
   // Get the id of the post, through url or query string
@@ -13,20 +16,25 @@ Paste = function() {
     : {NEW_POST:true,  VIEW:"CODE"};
 
   this.dom = {
-    textarea: $("#code"),
-    iframe:   $("#paste"),
-    viewcode: $("#viewcode"),
-    form:     $("#form"),
-    lines:    $("#lines")
+    textarea:  $("#code"),
+    framewrap: $("#framewrap"),
+    viewcode:  $("#viewcode"),
+    form:      $("#form"),
+    lines:     $("#lines")
   };
 
-  var home = this.live ? "/"
-    : "/pastebin/_design/pastebin.me/index.html";
+  this.window_size = {
+    height: 0,
+    width:  0
+  };
+
+  var home = this.live ? "/" : "/pastebin/_design/pastebin.me/index.html";
   $("#new a").attr("href", home);
 
   this.load_recent_posts();
   this.add_events();
   this.window_resize();
+  this.fill_lines();
 
   if( !this.state.NEW_POST ) {
     this.retrieve_post(this.state_id);
@@ -34,10 +42,43 @@ Paste = function() {
     document.title = "Pastebin.me - New Post";
     this.dom.textarea.show();
     this.dom.lines.show();
-    $("#templates, #save").show();
+    Paste.show_loaded();
   }
+};
 
-  this.fill_lines();
+Paste.prototype.retrieve_post = function( id )
+{
+  var show = "/pastebin/_design/pastebin.me/_show/raw/";
+  var that = this;
+
+  var init = function(data)
+  {
+    that.dom.textarea.text( data.paste );
+
+    if(data.paste.match(/<html/)) {
+      that.state.view = "HTML";
+      that.dom.viewcode.attr("checked", "checked");
+      $("#paste").attr("src", show+that.state._id);
+      that.dom.framewrap.show();
+    } else {
+      that.state.view = "CODE";
+      that.dom.textarea.show();
+      that.dom.lines.show();
+    }
+    Paste.show_loaded();
+  };
+
+  $.ajax({
+    url :     "/pastebin/"+this.state._id,
+    dataType: "json",
+    success:  init,
+    error :   function(data) { Paste.show_loaded(); }
+  });
+};
+
+Paste.show_loaded = function() {
+  $("#viewcode, #templates, #new, #save").show();
+  Paste.setup_toggle();
 };
 
 Paste.prototype.save_paste = function()
@@ -52,34 +93,65 @@ Paste.prototype.save_paste = function()
   $("#save").attr("disabled", "disabled").val("Saving...");
 
   $.ajax({
-    "url":"/pastebin/",
-    "type":"POST",
-    "data":JSON.stringify(paste),
-    "dataType": "json",
-    "success":function(data) {
-      document.location.href= "/"+data.id;
-    },
-    "error":function(XMLHttpRequest, textStatus, errorThrown) {
-      that.show_error("sorry, your paste didnt get through, please try again");
-    }
+    url:      "/pastebin/",
+    type:     "POST",
+    data:     JSON.stringify(paste),
+    dataType: "json",
+    success : function(data) { document.location.href= "/"+data.id; },
+    error:    function(req, status, error) { that.show_error(); }
   });
 };
 
-Paste.prototype.show_error = function(reason)
+Paste.prototype.show_error = function()
 {
-  $("#save").removeAttr("disabled").val("Save Your Paste");
-  $("#error").html("<strong>Error!</strong><br />"+reason).show();
+  $("#save").removeAttr("disabled").val("Save");
+  $("#error").html("<strong>Error!</strong><br />sorry, your paste didnt get "
+                   + "through, please try again").show();
   setTimeout(function() {
     $("#error").fadeOut();
   }, 2000);
 };
 
+Paste.prototype.view_iframe = function()
+{
+  this.dom.textarea.hide();
+  this.dom.lines.hide();
+
+  // Overwriting old frame seemed buggy, so just make new one
+  var paste = $("<iframe id=\"paste\"></iframe>");
+  this.dom.framewrap.empty().append(paste).show();
+
+  var html     = this.dom.textarea.val();
+  var timer    = null;
+  var framewin = paste[0].contentWindow;
+
+  paste.width( this.window_size.width-195 ).height( this.window_size.height-93 );
+  framewin.document.write(html);
+
+  var check_loaded = function() {
+    // frame got deleted between checking for load
+    if( !framewin.document ) {
+      window.clearInterval(timer);
+    // Yay frame is loaded (nasty check)
+    } else if( framewin.document.body != null ) {
+      window.clearInterval(timer);
+      Paste.fake_load(framewin);
+    }
+  };
+  timer = window.setInterval( check_loaded, 20);
+};
+
 Paste.prototype.toggle = function()
 {
-  this.dom.textarea.show();
-  this.dom.lines.show();
-  this.dom.iframe.hide();
-  this.dom.viewcode.addClass("disabled");
+  if( this.state.VIEW == "CODE") {
+    this.view_iframe();
+    this.state.VIEW = "HTML";
+  } else {
+    this.dom.textarea.show();
+    this.dom.lines.show();
+    this.dom.framewrap.hide();
+    this.state.VIEW = "CODE";
+  }
 };
 
 Paste.prototype.add_events = function()
@@ -108,7 +180,7 @@ Paste.prototype.add_events = function()
     checkTab(e);
   });
 
-  this.dom.viewcode.bind('mousedown', function(e) {
+  this.dom.viewcode.bind('change', function(e) {
     that.toggle();
     e.preventDefault();
     e.stopPropagation();
@@ -117,15 +189,18 @@ Paste.prototype.add_events = function()
 
 Paste.prototype.window_resize = function()
 {
-  var winheight = $(window).height(),
-       winwidth = $(window).width();
+  this.window_size = {
+    height: $(window).height(),
+    width:  $(window).width()
+  };
 
-  $("#code, #paste, #lines").height(winheight - 93);
-  $("#pastearea").height(winheight - 60);
-  $("#lines").height(winheight - 95);
+  // All very very nasty, but I got bored trying to make table layout work
+  $("#code, #paste, #lines").height(this.window_size.height - 93);
+  $("#pastearea").height(this.window_size.height - 60);
+  $("#lines").height(this.window_size.height - 95);
 
-  $("#code").width(winwidth-222);
-  $("#paste").width(winwidth-195);
+  $("#code").width(this.window_size.width-222);
+  $("#paste").width(this.window_size.width-195);
 };
 
 Paste.prototype.load_template = function(tpl)
@@ -136,13 +211,12 @@ Paste.prototype.load_template = function(tpl)
   $.get(url+tpl+".tpl", {}, function(data) {
 
     that.dom.textarea.val(data);
-    if( that.state !== "CODE" ) {
+    if( that.state.VIEW !== "CODE" ) {
       that.toggle();
     }
 
   }, "text");
 };
-
 
 Paste.prototype.load_recent_posts = function()
 {
@@ -173,37 +247,33 @@ Paste.prototype.fill_lines = function()
   $("#lines").html(str);
 };
 
-Paste.prototype.retrieve_post = function( id )
+// Because onload and such dont get called when dynamically setting
+// an iframes content, try to fake it, need to add other libs here,
+// and its always going to be buggy and nasty
+Paste.fake_load = function(frame)
 {
-  var show = "/pastebin/_design/pastebin.me/_show/raw/";
+  if( typeof frame.onload == "function" ) {
+    frame.onload();
+  }
 
-  var that = this;
-
-  $.ajax({
-    "url":"/pastebin/"+this.state._id,
-    "dataType": "json",
-    "success": function(data) {
-
-      that.dom.textarea.text( data.paste );
-
-      if(data.paste.match(/<html/)) {
-        that.dom.iframe.attr("src", show+that.state._id);
-        that.dom.iframe.show();
-        that.dom.viewcode.removeClass("disabled");
-      } else {
-        that.dom.textarea.show();
-        that.dom.lines.show();
-      }
-      $("#templates, #save").show();
-    },
-    "error" : function(data) {
-      that.toggle();
-      $("#templates, #save").show();
-    }
-  });
+  if( typeof frame.jQuery == "function" ) {
+    frame.jQuery.ready();
+  }
 };
 
-Paste.parse_query = function(url) {
+// Sets up that iphone toggle button thing
+Paste.setup_toggle = function()
+{
+  $('#viewcode').iphoneStyle({
+    checkedLabel:      'EDIT CODE',
+    uncheckedLabel:    'VIEW OUTPUT',
+    resizeContainer: false,
+    resizeHandle: false });
+};
+
+// Parses a query string
+Paste.parse_query = function(url)
+{
   var qs = url.split("?")[1];
   if( typeof qs !== "undefined" ) {
     var arr = qs.split("&"), query = {};

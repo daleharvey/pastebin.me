@@ -4,17 +4,17 @@
 
     <meta charset="utf-8" />
 
-    <link rel="stylesheet" 
-          href="/pastebin/_design/pastebin.me/paste.css" 
-          type="text/css">    
-    <link rel="shortcut icon" 
-          href="/pastebin/_design/pastebin.me/favicon.ico" 
+    <link rel="stylesheet"
+          href="./css/paste.css"
+          type="text/css" />
+    <link rel="shortcut icon"
+          href="./favicon.ico"
           type="image/x-icon"/>
 
     <title>Pastebin.me - Share Code</title>
-    
+
   </head>
-  
+
   <body>
 
     <div id="error"></div>
@@ -30,14 +30,12 @@
           <div id="templates">
             <strong>templates: </strong>
             <ul>
-              <li><a name="xhtml">XHTML</a></li>
+              <li><a name="xhtml">HTML</a></li>
               <li><a name="javascript">JAVASCRIPT</a></li>
               <li><a name="jquery">JQUERY</a></li>
-              <li><a name="jqueryui">JQUERY UI</a></li>
-              <li><a name="dojo">DOJO</a></li>
             </ul>
           </div>
-          
+
           <input type="submit" tabindex="3" id="save" class="btn"
                  value="Save &raquo;" />
           <div id="new"><a>(Blank Paste)</a></div>
@@ -47,33 +45,44 @@
 
     <div id="toolbar">
       <input id="viewcode" type="checkbox" />
-      <!--<input class="btn" id="viewcode" value="Edit This Paste"  />-->
       <div id="recent">
         <h3>Recent Posts</h3>
         <ul id="postlist"></ul>
       </div>
     </div>
-    
+
     <div id="footer">
       <table cellspacing="3">
         <tr>
           <td><em>who </em></td><td width="170px">
             <a href="http://arandomurl.com" target="_blank">dale@arandomurl.com</a></td>
-          <td><em>where </em></td><td><a target="_blank" href="http://www.linode.com/?r=bde45b7ba8346eec9a56d7276f536caea70c6004">linode</a></td>
+          <td><em>where </em></td><td><a target="_blank" href="http://couchone.com">CouchOne</a></td>
         </tr>
         <tr>
           <td><em>what </em></td><td><a target="_blank" href="http://github.com/daleharvey/pastebin.me/tree/master">Source(github)</a></td>
           <td><em>how </em></td><td><a target="_blank" href="http://couchdb.apache.org/">CouchDB</a></td>
         </tr>
       </table>
-      <div id="codepad">to paste and execute code (c, php etc) go to 
+      <div id="codepad">to paste and execute code (c, php etc) go to
         <a href="http://codepad.org" target="blank">codepad.org</a>
       </div>
     </div>
 
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.1/jquery.js"></script>
-    <script src="/pastebin/_design/pastebin.me/iphone-style-checkboxes.js"></script>
-    <script src="/pastebin/_design/pastebin.me/paste.js"></script>
+    <script src="./js/jquery-1.5.min.js"></script>
+    <script src="./js/iphone-style-checkboxes.js"></script>
+    <script src="./js/paste.js"></script>
+
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-59760-18']);
+      _gaq.push(['_trackPageview']);
+
+      (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
 
   </body>
 </html>

@@ -1,0 +1,42 @@
+[
+  {
+    "from": "favicon.ico",
+    "to": "favicon.ico"
+  },
+  {
+    "from": "css/*",
+    "to": "css/*"
+  },
+  {
+    "from": "js/*",
+    "to": "js/*"
+  },
+  {
+    "from": "images/*",
+    "to": "images/*"
+  },
+  {
+    "from": "_view/*",
+    "to": "_view/*"
+  },
+  {
+    "from": "_show/*",
+    "to": "_show/*"
+  },
+  {
+    "from": "tpl/*",
+    "to": "tpl/*"
+  },
+  {
+    "from": "/",
+    "to": "index.html"
+  },
+  {
+    "from": "pastebin/*",
+    "to": "../../*"
+  },
+  {
+    "from": "/*",
+    "to": "index.html"
+  }
+]

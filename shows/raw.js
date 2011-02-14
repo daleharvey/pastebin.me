@@ -1,8 +1,8 @@
 function(doc, req) {
-
-  respondWith(req, {
-    html : function() {
-      return {body:doc.paste};
-    }
-  });
+    return {
+        body: doc.paste,
+        headers: {
+            "Content-Type" : "text/html"
+        }
+    };
 };

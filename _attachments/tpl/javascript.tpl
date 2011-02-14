@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8" />
-    <title>Conforming XHTML 1.0 Strict Template</title>
-</head>
+    <title>Javascript Template</title>
 
-<body>
+    <style type="text/css">
+    </style>
+
+  </head>
+
+  <body>
+
     <div>Hello World</div>
 
-<script type="text/javascript">
-</script>
+    <script type="text/javascript">
+    </script>
 
-</body>
+  </body>
 </html>

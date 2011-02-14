@@ -1,9 +1,9 @@
-Paste = function() {
+var Paste = function() {
 
   // just so I can fix the urls when deving locally
   // (cant be bothered installing nginx)
   //this.live = "";
-  this.live = document.location.hostname == "pastebin.me";
+  this.live = true; //document.location.hostname == "pastebin.me";
 
   // Get the id of the post, through url or query string
   var query = Paste.parse_query(document.location.href);
@@ -28,7 +28,7 @@ Paste = function() {
     width:  0
   };
 
-  var home = this.live ? "/" : "/pastebin/_design/pastebin.me/index.html";
+  var home = this.live ? "../../" : "/pastebin/_design/pastebin.me/index.html";
   $("#new a").attr("href", home);
 
   this.load_recent_posts();
@@ -69,7 +69,7 @@ Paste.prototype.retrieve_post = function( id )
   };
 
   $.ajax({
-    url :     "/pastebin/"+this.state._id,
+    url :     "/pastebin/" + this.state._id,
     dataType: "json",
     success:  init,
     error :   function(data) { Paste.show_loaded(); }
@@ -97,6 +97,7 @@ Paste.prototype.save_paste = function()
     type:     "POST",
     data:     JSON.stringify(paste),
     dataType: "json",
+    contentType: "application/json",
     success : function(data) { document.location.href= "/"+data.id; },
     error:    function(req, status, error) { that.show_error(); }
   });
@@ -206,7 +207,7 @@ Paste.prototype.window_resize = function()
 Paste.prototype.load_template = function(tpl)
 {
   var that = this;
-  var url  = "/pastebin/_design/pastebin.me/tpl/";
+  var url  = "/tpl/";
 
   $.get(url+tpl+".tpl", {}, function(data) {
 
@@ -221,7 +222,7 @@ Paste.prototype.load_template = function(tpl)
 Paste.prototype.load_recent_posts = function()
 {
   var opts = { reduce: false, descending: true, limit:13 };
-  var url  = "/pastebin/_design/pastebin.me/_view/recent";
+  var url  = "../_view/recent";
 
   var root = this.live
     ? "/"

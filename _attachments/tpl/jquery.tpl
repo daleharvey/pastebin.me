@@ -2,16 +2,20 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Conforming XHTML 1.0 Strict Template</title>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js"></script>
-    <script type="text/javascript">
-        $(function()
-        {
-        });
-    </script>
-</head>
+    <title>Jquery Template</title>
 
-<body>
+    <style type="text/css">
+    </style>
+
+  </head>
+
+  <body>
+
     <div>Hello World</div>
-</body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+    <script type="text/javascript">
+    </script>
+
+  </body>
 </html>

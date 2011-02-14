@@ -2,14 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>Conforming XHTML 1.0 Strict Template</title>
-    
+    <title>HTML Template</title>
+
     <style type="text/css">
     </style>
-    
-</head>
 
-<body>
+  </head>
 
-</body>
+  <body>
+
+  </body>
+
 </html>
